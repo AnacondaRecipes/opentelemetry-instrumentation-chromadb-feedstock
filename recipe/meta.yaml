@@ -1,5 +1,5 @@
 {% set name = "opentelemetry-instrumentation-chromadb" %}
-{% set version = "0.49.6" %}
+{% set version = "0.57.0" %}
 
 package:
   name: {{ name|lower }}
@@ -7,34 +7,43 @@ package:
 
 source:
   url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name.replace('-', '_')}}-{{ version }}.tar.gz
-  sha256: 3bd805b1333028e6470765080f49d6a14129a76a81da8ddf3d284f1970e5ef8d
+  sha256: f7c0dbcc94a1d9f5d5aad4953dcd163e556699db9b0ac9fec8eae0814e91b8c7
 
 build:
   number: 0
   script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
-  skip: true  # [py<39]
+  skip: true  # [py<310]
 
 requirements:
   host:
     - pip
     - python
-    - poetry-core
-
+    - hatchling
   run:
     - python
     - opentelemetry-api >=1.38.0,<2.0.0
     - opentelemetry-semantic-conventions >=0.59b0
     - opentelemetry-instrumentation >=0.59b0
-    - opentelemetry-semantic-conventions-ai >=0.4.13,<0.5
+    - opentelemetry-semantic-conventions-ai >=0.5.1,<0.6.0
   run_constrained:
-    - chromadb >=0.5.0,<0.6.0
+    - chromadb
 
-# Unable to run tests and check imports, chromadb is not in the main channel.
 test:
+  source_files:
+    - tests
+    - pyproject.toml
+  imports:
+    - opentelemetry.instrumentation.chromadb
   commands:
     - pip check
+    #       span = next(span for span in spans if span.name == "chroma.query.segment._query")
+    #E       StopIteration
+    - pytest -vvv --deselect=tests/test_query.py::test_chroma_query_segment_query
   requires:
     - pip
+    - pytest
+    - chromadb
+    - opentelemetry-sdk
 
 about:
   home: https://www.traceloop.com/openllmetry
@@ -52,4 +61,3 @@ extra:
     - timkpaine
   skip-lints:
     - invalid_url
-    - missing_imports_or_run_test_py
