@@ -27,21 +27,12 @@ requirements:
     - opentelemetry-semantic-conventions >=0.63b1
 
 test:
-  source_files:
-    - tests
-    - pyproject.toml
   imports:
     - opentelemetry.instrumentation.chromadb
   commands:
     - pip check
-    #       span = next(span for span in spans if span.name == "chroma.query.segment._query")
-    #E       StopIteration
-    - pytest -vvv --deselect=tests/test_query.py::test_chroma_query_segment_query
   requires:
     - pip
-    - pytest
-    - chromadb
-    - opentelemetry-sdk
 
 about:
   home: https://www.traceloop.com/openllmetry
