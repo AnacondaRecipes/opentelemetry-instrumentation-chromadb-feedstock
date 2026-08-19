@@ -1,13 +1,13 @@
 {% set name = "opentelemetry-instrumentation-chromadb" %}
-{% set version = "0.57.0" %}
+{% set version = "0.62.1" %}
 
 package:
-  name: {{ name|lower }}
+  name: {{ name }}
   version: {{ version }}
 
 source:
   url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name.replace('-', '_')}}-{{ version }}.tar.gz
-  sha256: f7c0dbcc94a1d9f5d5aad4953dcd163e556699db9b0ac9fec8eae0814e91b8c7
+  sha256: 4d6ff59fe1bd364e50a0268d7d28f163b47decade9e77d73c06a0765238902f6
 
 build:
   number: 0
@@ -22,9 +22,9 @@ requirements:
   run:
     - python
     - opentelemetry-api >=1.38.0,<2.0.0
-    - opentelemetry-semantic-conventions >=0.59b0
     - opentelemetry-instrumentation >=0.59b0
     - opentelemetry-semantic-conventions-ai >=0.5.1,<0.6.0
+    - opentelemetry-semantic-conventions >=0.63b1
 
 test:
   source_files:
